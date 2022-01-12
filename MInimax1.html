@@ -1,0 +1,42 @@
+
+<!doctype html>
+<html>
+  <head>
+    <title>Nupu tõstmise mäng</title>
+	<script>
+	  const maxKaugus=21, minKaik=1, maxKaik=3;
+	  function vastane(kes){return (kes=="a")?"i":"a";}
+	  function alamseisud(kaugus){
+	     let vastus=[];
+		 for(let kaik=minKaik; kaik<=maxKaik; kaik++){
+		    vastus.push(kaugus+kaik);
+		 }
+		 return vastus;
+	  }
+	  function leiaHinnangud(kaugus, kes){
+	      return alamseisud(kaugus).map(
+		   function(uuskaugus){return seisuHinnang(uuskaugus, vastane(kes));});
+	  }
+	  function seisuHinnang(kaugus, kes){  //+1 arvuti võit, -1 inimese võit
+	    if(kaugus>=maxKaugus-maxKaik){return (kes=="a")?1:-1;}
+		let hinnangud=leiaHinnangud(kaugus, kes);
+		return (kes=="a")?Math.max(...hinnangud):Math.min(...hinnangud);
+	  }
+	  function mituSammu(kaugus){ //arvuti parim sammude arv sellel kaugusel
+	     let hinnangud=leiaHinnangud(kaugus, "a");	
+         let suurimaKoht=hinnangud.indexOf(Math.max(...hinnangud));	
+         let uusKaugus=alamseisud(kaugus)[suurimaKoht];	
+         console.log(hinnangud, suurimaKoht, uusKaugus);		 
+		 return uusKaugus-kaugus;
+	  }
+	  console.log(seisuHinnang(14, "a"));
+	  console.log(mituSammu(14));
+	  console.log(alamseisud(10));
+	
+
+	</script>
+  </head>
+  <body>
+  
+  </body>
+</html>

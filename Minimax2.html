@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+  <head>
+    <script>
+     let seis1=" P P P P. . . .  . . . .. . . .  . . . .. . . .  . . . .. . J . "
+	 let janeseSammud=[[-1, -1], [-1, 1], [1, -1], [1, 1]];
+	 let pyssimeheSammud=[[1, -1], [1, 1]];
+	 function kasVaba(seis, rida, veerg){
+	    if(rida<0 || rida>7 || veerg<0 || veerg>7){return false;}
+		return seis[rida*8+veerg]==".";
+	 }
+	 function kusJanes(seis){
+	    let koht=seis.indexOf("J");
+		return [parseInt(koht/8), koht % 8];
+	 }
+	 function kusPyssimehed(seis){
+	    let v=[];
+		for(let i=0; i<seis.length; i++){
+		   if(seis[i]=="P"){
+		     v.push([parseInt(i/8), i%8]);
+		   }
+		}
+		return v;
+	 }
+	 function kuvaSeis(seis){
+	    let v=""
+	    for(let rida=0; rida<8; rida++){
+		   v+=seis.substring(rida*8, rida*8+8)+"\n";
+		}
+		return v;
+	 }
+	 console.log(kuvaSeis(seis1));
+	 console.log(kusJanes(seis1));
+	 //Looge funktsioon, mis tagastab seisust võimalikud seisud
+	 //pärast jänese käiku
+	 function janeseSeisud(seis){
+        let koht=kusJanes(seis);	 
+	    let v=[];
+	    for(let i=0; i<janeseSammud.length; i++){
+		   let samm=janeseSammud[i];
+		   let uuskoht=[koht[0]+samm[0], koht[1]+samm[1]];
+		   if(kasVaba(seis, uuskoht[0], uuskoht[1])){
+			   let m=seis.split("");
+			   m[uuskoht[0]*8+uuskoht[1]]="J";
+			   m[koht[0]*8+koht[1]]="."
+			   v.push(m.join(""));
+		   }
+		}
+		return v;
+	 }
+	 //Looge funktsioon, mis tagastab seisust võimalikud seisud
+	 //pärast püssimeeste kõiki võimalikke käike
+	 function pyssimeheSeisud(seis){
+	   let kohad=kusPyssimehed(seis);
+	   let v=[];
+	   for(let pnr=0; pnr<kohad.length; pnr++){
+	      let koht=kohad[pnr];
+		  for(let i=0; i<pyssimeheSammud.length; i++){
+		     let samm=pyssimeheSammud[i];
+		     let uuskoht=[koht[0]+samm[0], koht[1]+samm[1]];
+		     if(kasVaba(seis, uuskoht[0], uuskoht[1])){
+			   let m=seis.split("");
+			   m[uuskoht[0]*8+uuskoht[1]]="P";
+			   m[koht[0]*8+koht[1]]="."
+			   v.push(m.join(""));
+		     }			 
+		  }
+	   }
+       return v;	   
+	 }
+	 console.log(janeseSeisud(seis1));
+	 console.log(pyssimeheSeisud(seis1));
+	 console.log(kuvaSeis(pyssimeheSeisud(seis1)[4]));
+	</script>
+  </head>
+  <body>
+  
+  </body>
+</html>
