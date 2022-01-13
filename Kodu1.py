@@ -1,6 +1,8 @@
 from PIL import Image, ImageDraw
 images = []
 
+#ehitame labürindi
+
 a = [
     [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0 ,0, 0, 0, 0, 0, 0, 0, 0, 1],
@@ -18,6 +20,7 @@ borders = 6
 start_i, start_j = 1,1
 end_i, end_j = 5,19
 
+#Funktsioon, mis joonistab välja labürindi ja selle läbimise
 
 def draw_matrix(a, the_path=[]):
     im = Image.new('RGB', (zoom * len(a[0]), zoom * len(a)), (255, 255, 255))
@@ -51,17 +54,22 @@ def draw_matrix(a, the_path=[]):
 
 path_so_far = []
 
+#Funktsioon, mis otsib teed läbi labürindi
 
 def go_to(i, j):
     global path_so_far, end_i, end_j, a, m
+    #Kas me oleme kuskil otsas?
     if i < 0 or j < 0 or i > len(a)-1 or j > len(a[0])-1:
         return
-    # If we've already been there or there is a wall, quit
+    # Kui me oleme juba selle seina juures olnud?
     if (i, j) in path_so_far or a[i][j] > 0:
         return
+    #Kui ei, siis me võtame selle funktsiooni lõpust ära.
     path_so_far.append((i, j))
+    #Märgime ruudu külastatuks
     a[i][j] = 2
     draw_matrix(a, path_so_far)
+    #Kas me oleme lõppu jõundnud?
     if (i, j) == (end_i, end_j):
         print("Found!", path_so_far)
         for animate in range(10):
@@ -69,8 +77,10 @@ def go_to(i, j):
                 draw_matrix(a, path_so_far)
             else:
                 draw_matrix(a)
+                #Võtame ruudu järjendist ära.
         path_so_far.pop()
         return
+    #tavapärane käik – Vaatame naaberruute
     else:
         go_to(i - 1, j)  # check top
         go_to(i + 1, j)  # check bottom
@@ -80,10 +90,10 @@ def go_to(i, j):
     draw_matrix(a, path_so_far)
     return
 
-
+#Läheme algusesse!
 go_to(start_i, start_j)
 
-
+#Prindime kasutajaliidese nii, et kasutaja näeks labürindi loomist.
 images[0].save('maze.gif',
                save_all=True, append_images=images[1:],
                optimize=False, duration=50, loop=0)
